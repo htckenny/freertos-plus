@@ -60,6 +60,10 @@ int parse_command(char *str, char *argv[]){
 }
 
 void ls_command(int n, char *argv[]){
+	if(n!=1){
+			fio_printf(2, "\r\nUsage: ls\r\n");
+			return;
+		}
 
 }
 
@@ -145,7 +149,7 @@ void test_command(int n, char *argv[]) {
     int error;
 
     fio_printf(1, "\r\n");
-
+    handle = host_action(SYS_SYSTEM, "mkdir -p output");
     handle = host_action(SYS_OPEN, "output/syslog", 8);
     if(handle == -1) {
         fio_printf(1, "Open file error!\n\r");
@@ -158,6 +162,12 @@ void test_command(int n, char *argv[]) {
         fio_printf(1, "Write file error! Remain %d bytes didn't write in the file.\n\r", error);
         host_action(SYS_CLOSE, handle);
         return;
+    }
+    else{
+    	  fio_printf(1, "Write file success! !\n\r");
+    	  fio_printf(1, "%s  being written! !\n\r",buffer);
+    	  host_action(SYS_CLOSE,handle);
+    	  return;
     }
 
     host_action(SYS_CLOSE, handle);

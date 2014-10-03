@@ -12,7 +12,6 @@ struct romfs_fds_t {
     const uint8_t * file;
     uint32_t cursor;
 };
-
 static struct romfs_fds_t romfs_fds[MAX_FDS];
 
 static uint32_t get_unaligned(const uint8_t * d) {
