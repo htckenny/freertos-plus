@@ -1,7 +1,7 @@
 TARGET = main
 .DEFAULT_GOAL = all
 
-CROSS_COMPILE ?= arm-none-eabi-
+CROSS_COMPILE ?= /usr/bin/arm-none-eabi-
 CC := $(CROSS_COMPILE)gcc
 CFLAGS = -fno-common -O0 \
 	 -std=c99 -pedantic \

@@ -57,6 +57,5 @@ int fs_open(const char * path, int flags, int mode) {
         if (fss[i].hash == hash)
             return fss[i].cb(fss[i].opaque, path, flags, mode);
     }
-    
     return -2;
 }
