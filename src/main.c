@@ -7,7 +7,8 @@
 #include "queue.h"
 #include "semphr.h"
 #include <string.h>
-
+#include <stdio.h>
+#include <stdlib.h>
 /* Filesystem includes */
 #include "filesystem.h"
 #include "fio.h"
@@ -107,12 +108,17 @@ void command_prompt(void *pvParameters)
 	}
 
 }
-
+void int2str(int i, char *s) {
+	sprintf(s,"%d",i);
+}
 void system_logger(void *pvParameters)
 {
     signed char buf[128];
     char output[512] = {0};
+    int num=0;
+    char snum[100];
     char *tag = "\nName          State   Priority  Stack  Num\n*******************************************\n";
+
     int handle, error;
     const portTickType xDelay = 100000 / 100;
 
@@ -123,7 +129,14 @@ void system_logger(void *pvParameters)
     }
 
     while(1) {
-        memcpy(output, tag, strlen(tag));
+//    	fio_printf(1, "num=%d\n", num);
+    	int2str(num, snum);
+    	strcat(snum,tag);
+
+//    	fio_printf(1, "snum=%s\n", snum);
+//    	fio_printf(1, "tag=%s\n", tag);
+        //memcpy(output, tag, strlen(tag));
+    	memcpy(output, snum, strlen(snum));
         error = host_action(SYS_WRITE, handle, (void *)output, strlen(output));
         if(error != 0) {
             fio_printf(1, "Write file error! Remain %d bytes didn't write in the file.\n\r", error);
@@ -142,6 +155,7 @@ void system_logger(void *pvParameters)
         }
 
         vTaskDelay(xDelay);
+        num++;
     }
     
     host_action(SYS_CLOSE, handle);
@@ -169,8 +183,7 @@ int main()
 	xTaskCreate(command_prompt,
 	            (signed portCHAR *) "CLI",
 	            512 /* stack size */, NULL, tskIDLE_PRIORITY + 2, NULL);
-
-#if 0
+#if 1
 	/* Create a task to record system log. */
 	xTaskCreate(system_logger,
 	            (signed portCHAR *) "Logger",
