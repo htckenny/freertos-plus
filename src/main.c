@@ -116,7 +116,7 @@ void system_logger(void *pvParameters)
     signed char buf[128];
     char output[512] = {0};
     int num=0;
-    char snum[100];
+    char snum[92];
     char *tag = "\nName          State   Priority  Stack  Num\n*******************************************\n";
 
     int handle, error;
@@ -129,13 +129,9 @@ void system_logger(void *pvParameters)
     }
 
     while(1) {
-//    	fio_printf(1, "num=%d\n", num);
+
     	int2str(num, snum);
     	strcat(snum,tag);
-
-//    	fio_printf(1, "snum=%s\n", snum);
-//    	fio_printf(1, "tag=%s\n", tag);
-        //memcpy(output, tag, strlen(tag));
     	memcpy(output, snum, strlen(snum));
         error = host_action(SYS_WRITE, handle, (void *)output, strlen(output));
         if(error != 0) {
