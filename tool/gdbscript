@@ -1,6 +1,12 @@
+
 file build/main.elf
 target remote :3333
 
 b main
+
+c
+
+call system_logger
+
 
 c
